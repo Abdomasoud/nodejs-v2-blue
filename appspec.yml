@@ -1,0 +1,19 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "aws_congrists
+        LoadBalancerInfo:
+          ContainerName: "nodejs"
+          ContainerPort: 3000
+          TargetGroupPairInfo:
+            ProdTrafficRoute:
+              ListenerArns:
+                - "Tg-1"
+            TestTrafficRoute:
+              ListenerArns:
+                - "Tg-2"
+            TargetGroups:
+              - Name: "Tg-1"
+              - Name: "Tg-2"
