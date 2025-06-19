@@ -9,12 +9,24 @@ phases:
     pre_build:
         commands: 
             - echo "we are in the pre build phase"
+            # Login to Docker Hub (replace with your Docker Hub username and password or use secrets)
+            - echo "$DOCKERHUB_PASSWORD" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            # Login to ECR
+            - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
     build:
         commands:
             - echo "we are in the build block"
-            - echo "we will run some tests"
-            - grep -Fq "Congratulations" index.html
+            - docker build -t nodejs-v2-blue:latest .
+            - docker tag nodejs-v2-blue:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/nodejs-v2-blue:latest
     post_build:
         commands:
-            - echo "we are in the post build phase"
-            
+                - echo "we are in the post build phase"
+                - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/nodejs-v2-blue:latest
+
+artifacts:
+  files:
+    - appspec.yml
+    - scripts/**/*
+    - Dockerfile
+    - build/**/*
+
