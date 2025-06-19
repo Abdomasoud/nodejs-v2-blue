@@ -16,12 +16,12 @@ phases:
     build:
         commands:
             - echo "we are in the build block"
-            - docker build -t nodejs-v2-blue:latest .
-            - docker tag nodejs-v2-blue:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/nodejs-v2-blue:latest
+            - docker build -t nodejs-v2:latest .
+            - docker tag nodejs-v2:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/nodejs-v2-blue:latest
     post_build:
         commands:
                 - echo "we are in the post build phase"
-                - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/nodejs-v2-blue:latest
+                - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/nodejs-v2:latest
 
 artifacts:
   files:
