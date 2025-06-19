@@ -27,4 +27,3 @@ artifacts:
   files:
     - appspec.yml
     - imagedefinitions.json
-
