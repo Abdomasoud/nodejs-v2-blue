@@ -3,17 +3,14 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: "aws_congrists
+        TaskDefinition: "arn:aws:ecs:eu-north-1:309878413729:task-definition/aws_congrists:1"
         LoadBalancerInfo:
           ContainerName: "nodejs"
           ContainerPort: 3000
           TargetGroupPairInfo:
             ProdTrafficRoute:
               ListenerArns:
-                - "Tg-1"
-            TestTrafficRoute:
-              ListenerArns:
-                - "Tg-2"
+                - "loadbalancer-for-codeploy-ecs-420707511.eu-north-1.elb.amazonaws.com"
             TargetGroups:
               - Name: "Tg-1"
               - Name: "Tg-2"
