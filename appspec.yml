@@ -1,0 +1,9 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "congratulations-application-TaskDef"
+        LoadBalancerInfo:
+          ContainerName: "application-container"
+          ContainerPort: 3000
