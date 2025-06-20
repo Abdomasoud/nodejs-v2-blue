@@ -1,19 +1,21 @@
 version: 0.2
 
-phases: 
-    install:
-        runtime-versions:
-            nodejs: latest
-        commands:
-            - echo "installing something"
-    pre_build:
-        commands: 
-            - echo "we are in the pre build phase"
-    build:
-        commands:
-            - echo "we are in the build block"
-            - echo "we will run some tests"
-            - grep -Fq "Congratulations" index.html
-    post_build:
-        commands:
-            - echo "we are in the post build phase"
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t congratulations-ecr:latest .
+      - docker tag congratulations-ecr:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/congratulations-ecr:latest
+  post_build:
+    commands:
+      - echo Pushing the Docker image to ECR...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/congratulations-ecr:latest
+
+artifacts:
+  files:
+    - appspec.yml
+    - scripts/**/*
