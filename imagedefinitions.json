@@ -1,6 +1,6 @@
 [
   {
-    "name": "congratulations-ecr",
+    "name": "application-container",
     "imageUri": "309878413729.dkr.ecr.eu-north-1.amazonaws.com/congratulations-ecr"
   }
 ]
